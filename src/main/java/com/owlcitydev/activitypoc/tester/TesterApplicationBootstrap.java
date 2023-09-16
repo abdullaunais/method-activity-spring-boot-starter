@@ -19,12 +19,12 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class ApplicationBootstrap implements ApplicationListener<ApplicationStartedEvent> {
+public class TesterApplicationBootstrap implements ApplicationListener<ApplicationStartedEvent> {
 
     private final ApplicationContext applicationContext;
     private final TesterService testerService;
 
-    public ApplicationBootstrap(ApplicationContext applicationContext, TesterService testerService) {
+    public TesterApplicationBootstrap(ApplicationContext applicationContext, TesterService testerService) {
         this.applicationContext = applicationContext;
         this.testerService = testerService;
     }
