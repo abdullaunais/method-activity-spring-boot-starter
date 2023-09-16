@@ -1,6 +1,7 @@
 package com.owlcitydev.activitypoc.activity.annotations.activity;
 
 import com.owlcitydev.activitypoc.activity.domain.ActivityLevel;
+import com.owlcitydev.activitypoc.activity.domain.BaseActivityParams;
 
 import java.lang.annotation.*;
 
@@ -10,6 +11,8 @@ import java.lang.annotation.*;
 @Documented
 public @interface PreActivity {
     String value();
+
+    Class<?> paramClass() default BaseActivityParams.class;
 
     ActivityLevel level() default ActivityLevel.INFO;
 }

@@ -3,6 +3,7 @@ package com.owlcitydev.activitypoc.tester;
 import com.owlcitydev.activitypoc.activity.annotations.activity.ErrorActivity;
 import com.owlcitydev.activitypoc.activity.annotations.activity.PostActivity;
 import com.owlcitydev.activitypoc.activity.annotations.activity.PreActivity;
+import com.owlcitydev.activitypoc.activity.annotations.param.ExpressionAlias;
 import com.owlcitydev.activitypoc.activity.domain.ActivityLevel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
@@ -20,7 +21,7 @@ public class TesterService {
     }
 
 
-    @PreActivity("new String('Test testPreActivity works!')")
+    @PreActivity(value = "new String('Test testPreActivity works!')", paramClass = TesterActivityParams.class)
     public void testPreActivity() {
         log.debug("TesterService.testPreActivity() invoked");
     }
@@ -30,9 +31,14 @@ public class TesterService {
         log.debug("TesterService.testPreActivityWithArgStrings() invoked with args: {}, {}", arg1, arg2);
     }
 
-    @PreActivity("#arg1 + ' ' + #user.username")
-    public void testPreActivityWithArgObjects(String arg1, User user) {
+    @PreActivity("#arg1 + ' ' + #user?.username")
+    public void testPreActivityWithArgObjects(String arg1, @ExpressionAlias("user") User user2) {
         log.debug("TesterService.testPreActivityWithArgObjects() invoked");
+    }
+
+    @PreActivity(value = "'Test environment prop works with tester.prop=' + @environment.getProperty('tester.prop')", paramClass = TesterActivityParams.class)
+    public void testPreActivityWithCustomParamClass() {
+        log.debug("TesterService.testPreActivityWithCustomParamClass() invoked");
     }
 
     @PreActivity("'Test environment prop works with tester.prop=' + @environment.getProperty('tester.prop')")
@@ -58,20 +64,20 @@ public class TesterService {
         return new User("i_am_return_username", "return_pwd", new HashSet<>());
     }
 
-    @PreActivity("'Test pre activity with return object'")
+    @PreActivity("'Test pre post activity with return object'")
     @PostActivity("#returnObject")
     public String testPrePostActivityWithReturnObject() {
         log.debug("TesterService.testPrePostActivityWithReturnObject() invoked");
         return "I am number two!";
     }
 
-    @PreActivity("'Test pre activity with return object and error'")
+    @PreActivity("'Test pre post activity with return object and error'")
     @ErrorActivity("'Test error activity with return object and error'")
     @PostActivity("#returnObject")
     public String testPrePostErrorActivityWithReturnObject() {
         log.debug("TesterService.testPrePostErrorActivityWithReturnObject() invoked");
         if (true)
-            throw new RuntimeException("I am number three!");
+            throw new RuntimeException("I am a runtime exception message!");
         return "I am number three!";
     }
 

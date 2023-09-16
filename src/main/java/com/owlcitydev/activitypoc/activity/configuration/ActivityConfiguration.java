@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 public class ActivityConfiguration {
     private ExpressionParser expressionParser;
-    private Class<?> defaultActivityParamsClass;
     private List<IActivityProvider> registeredActivityProviders;
     private ActivityLevel activityLevel;
 }

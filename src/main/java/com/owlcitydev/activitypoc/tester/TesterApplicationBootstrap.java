@@ -34,19 +34,31 @@ public class TesterApplicationBootstrap implements ApplicationListener<Applicati
         log.info("Application bootstrap completed");
         this.logBeanNames();
         this.setSecurityContext();
+        log.info("--------------------");
         testerService.init();
+        log.info("--------------------");
 
         testerService.testPreActivity();
+        log.info("--------------------");
         testerService.testPreActivityWithArgStrings("Test testPreActivityWithArgStrings", "Works!");
+        log.info("--------------------");
         testerService.testPreActivityWithArgObjects("Test testPreActivityWithArgObjects with", new User("hello_arg_user", "test_password", new HashSet<>()));
+        log.info("--------------------");
+        testerService.testPreActivityWithCustomParamClass();
+        log.info("--------------------");
         testerService.testPreActivityWithEnvironmentProperty();
+        log.info("--------------------");
         testerService.testPreActivityWithSystemProperty();
+        log.info("--------------------");
         testerService.testPreActivityWithAuthenticationPrincipalProperty();
+        log.info("--------------------");
 
 
         testerService.testPostActivityWithReturnObject();
+        log.info("--------------------");
 
         testerService.testPrePostActivityWithReturnObject();
+        log.info("--------------------");
 
         try {
             testerService.testPrePostErrorActivityWithReturnObject();

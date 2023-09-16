@@ -45,9 +45,12 @@ public class ActivityAspects {
         log.trace("invoked ActivityAspects.preActivity");
         try {
             String activityTemplate = preActivity.value();
-            ActivityLevel activityLevel = preActivity.level();
             log.debug("activityTemplate: {}", activityTemplate);
-            ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, proceedingJoinPoint);
+            ActivityLevel activityLevel = preActivity.level();
+            log.debug("activityLevel: {}", activityLevel);
+            Class<?> paramClass = preActivity.paramClass();
+            log.debug("paramClass: {}", paramClass.getSimpleName());
+            ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, paramClass, proceedingJoinPoint);
             activityProviderAdaptor.send(activity, preActivity, activityLevel);
         } catch (Exception e) {
             log.error("Exception in preActivity: ", e);
@@ -61,10 +64,13 @@ public class ActivityAspects {
         Object returnObject = proceedingJoinPoint.proceed();
         try {
             String activityTemplate = postActivity.value();
-            ActivityLevel level = postActivity.level();
             log.debug("activityTemplate: {}", activityTemplate);
-            ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, proceedingJoinPoint, returnObject);
-            activityProviderAdaptor.send(activity, postActivity, level);
+            ActivityLevel activityLevel = postActivity.level();
+            log.debug("activityLevel: {}", activityLevel);
+            Class<?> paramClass = postActivity.paramClass();
+            log.debug("paramClass: {}", paramClass.getSimpleName());
+            ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, paramClass, proceedingJoinPoint, returnObject);
+            activityProviderAdaptor.send(activity, postActivity, activityLevel);
         } catch (Exception e) {
             log.error("Exception in postActivity: ", e);
         }
@@ -77,14 +83,18 @@ public class ActivityAspects {
         try {
             return proceedingJoinPoint.proceed();
         } catch (Throwable t) {
-            log.error("Error when proceeding joint point: ", t);
+            log.error("Error when proceeding joint point: {}", t.getMessage());
+            log.trace("Error when proceeding joint point: ", t);
             log.error("Possibly an expected error, since error logging activity is fired");
             try {
                 String activityTemplate = errorActivity.value();
-                ActivityLevel level = errorActivity.level();
                 log.debug("activityTemplate: {}", activityTemplate);
-                ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, proceedingJoinPoint);
-                activityProviderAdaptor.send(activity, errorActivity, level);
+                ActivityLevel activityLevel = errorActivity.level();
+                log.debug("activityLevel: {}", activityLevel);
+                Class<?> paramClass = errorActivity.paramClass();
+                log.debug("paramClass: {}", paramClass.getSimpleName());
+                ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, paramClass, proceedingJoinPoint);
+                activityProviderAdaptor.send(activity, errorActivity, activityLevel);
             } catch (Exception e) {
                 log.error("Exception in errorActivity: ", e);
             }

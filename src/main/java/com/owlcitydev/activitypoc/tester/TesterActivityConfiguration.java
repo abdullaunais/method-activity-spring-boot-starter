@@ -15,7 +15,6 @@ public class TesterActivityConfiguration {
         return ActivityConfiguration.builder()
                 .activityLevel(ActivityLevel.DEBUG)
                 .registeredActivityProviders(List.of(new TesterSlf4jActivityProvider()))
-                .defaultActivityParamsClass(TesterActivityParams.class)
                 .expressionParser(new SpelExpressionParser())
                 .build();
     }
