@@ -13,6 +13,7 @@ public @interface PostActivity {
     String value();
 
     String entity() default "generic";
+
     String entityId() default "''";
 
     Class<?> paramClass() default BaseActivityParams.class;

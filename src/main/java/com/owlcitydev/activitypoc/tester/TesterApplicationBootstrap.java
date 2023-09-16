@@ -50,6 +50,8 @@ public class TesterApplicationBootstrap implements ApplicationListener<Applicati
         log.info("--------------------");
         testerService.testPreActivityWithSystemProperty();
         log.info("--------------------");
+        testerService.testPreActivityWithSpringProperty();
+        log.info("--------------------");
         testerService.testPreActivityWithAuthenticationPrincipalProperty();
         log.info("--------------------");
 

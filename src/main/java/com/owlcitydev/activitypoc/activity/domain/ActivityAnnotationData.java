@@ -6,7 +6,8 @@ import lombok.Data;
 @Data
 @Builder(setterPrefix = "with")
 public class ActivityAnnotationData {
-    private String template;
+    @Builder.Default
+    private String template = "''";
     @Builder.Default
     private String entity = "generic";
     @Builder.Default

@@ -11,6 +11,7 @@ import org.aspectj.lang.reflect.CodeSignature;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.expression.BeanFactoryResolver;
+import org.springframework.core.env.Environment;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,10 +27,12 @@ import java.util.stream.IntStream;
 public class ActivityParser implements IActivityParser {
     private final ApplicationContext applicationContext;
     private final ExpressionParser expressionParser;
+    private final Environment environment;
 
-    public ActivityParser(ActivityConfiguration activityConfiguration, ApplicationContext applicationContext) {
+    public ActivityParser(ActivityConfiguration activityConfiguration, ApplicationContext applicationContext, Environment environment) {
         this.applicationContext = applicationContext;
         this.expressionParser = activityConfiguration.getExpressionParser();
+        this.environment = environment;
     }
 
     @Override
@@ -68,7 +71,11 @@ public class ActivityParser implements IActivityParser {
         context.setVariable("authentication", SecurityContextHolder.getContext().getAuthentication());
         Optional.ofNullable(returnObject).ifPresent(obj -> context.setVariable("returnObject", obj));
 
-        Object activityObj = expressionParser.parseExpression(annotationData.getTemplate())
+        String templateStr = annotationData.getTemplate();
+        if (templateStr.startsWith("$")) {
+            templateStr = environment.resolvePlaceholders(templateStr);
+        }
+        Object activityObj = expressionParser.parseExpression(templateStr)
                 .getValue(context, applicationContext, Object.class);
         String entityId = expressionParser.parseExpression(annotationData.getEntityId())
                 .getValue(context, applicationContext, String.class);
@@ -82,6 +89,9 @@ public class ActivityParser implements IActivityParser {
                         Optional.ofNullable(paramExpression)
                                 .ifPresent(annotation -> {
                                     String expression = annotation.value();
+                                    if (expression.startsWith("$")) {
+                                        expression = environment.resolvePlaceholders(expression);
+                                    }
                                     Object value = expressionParser.parseExpression(expression).getValue(context);
                                     try {
                                         field.setAccessible(true);

@@ -12,4 +12,6 @@ public class TesterActivityParams extends BaseActivityParams {
     private String tester_name;
     @ParamExpression("@systemProperties['java.version']")
     private String java_version;
+    @ParamExpression("${tester.parse-at-param-class}")
+    private String tester_spring_config;
 }

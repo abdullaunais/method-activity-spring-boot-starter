@@ -52,6 +52,12 @@ public class TesterService {
     }
 
 
+    @PreActivity(value = "${tester.template}", level = ActivityLevel.DEBUG)
+    public void testPreActivityWithSpringProperty() {
+        log.debug("TesterService.testPreActivityWithSpringProperty() invoked");
+    }
+
+
     @PreActivity(value = "'Test principal username with ' + #authentication?.principal?.username", level = ActivityLevel.ERROR)
     public void testPreActivityWithAuthenticationPrincipalProperty() {
         log.debug("TesterService.testPreActivityWithAuthenticationPrincipalProperty() invoked");
