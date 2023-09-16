@@ -1,4 +1,4 @@
-package com.github.abu.methodactivity.tester.providers;
+package com.github.abu.methodactivity.test.providers;
 
 import com.github.abu.methodactivity.activity.annotations.provider.ActivityProvider;
 import com.github.abu.methodactivity.activity.domain.ActivityLevel;
@@ -11,10 +11,10 @@ import java.util.Stack;
 
 @Slf4j
 @ActivityProvider
-public class TesterMessageStackActivityProvider implements IActivityProvider {
+public class TestMessageStackActivityProvider implements IActivityProvider {
     private final Stack<String> messageStack;
 
-    public TesterMessageStackActivityProvider(Stack<String> messageStack) {
+    public TestMessageStackActivityProvider(Stack<String> messageStack) {
         this.messageStack = messageStack;
     }
 

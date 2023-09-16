@@ -1,4 +1,4 @@
-package com.github.abu.methodactivity.tester.providers;
+package com.github.abu.methodactivity.test.providers;
 
 import com.github.abu.methodactivity.activity.annotations.provider.ActivityProvider;
 import com.github.abu.methodactivity.activity.domain.ActivityLevel;
@@ -8,11 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.event.Level;
 
 import java.lang.annotation.Annotation;
-import java.util.Stack;
 
 @Slf4j
 @ActivityProvider
-public class TesterSlf4jActivityProvider implements IActivityProvider {
+public class TestSlf4jActivityProvider implements IActivityProvider {
 
     @Override
     public void send(ParsedActivity<?> parsedActivity, Annotation annotation, ActivityLevel level) {

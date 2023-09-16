@@ -1,6 +1,6 @@
 package com.github.abu.methodactivity;
 
-import com.github.abu.methodactivity.tester.service.TesterService;
+import com.github.abu.methodactivity.test.service.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,47 +22,6 @@ import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * : (PreActivity) [generic:] [BaseActivityParams()]: Test system prop works with C:\Program Files\Java\jdk-20
- * : TesterService.invokePreActivityWithSystemProperty() invoked
- * : Setting security context
- * : Setting security context
- * : Setting security context
- * : (PreActivity) [generic:] [TesterActivityParams(tester_name=test_user, java_version=20.0.1, tester_spring_config=I am test_user, and I am parsed at param expression level)]: Test environment prop works with tester.prop=Sample Prop
- * : TesterService.invokePreActivityWithCustomParamClass() invoked
- * : Setting security context
- * : (PreActivity) [generic:] [BaseActivityParams()]: My name is test_user, and I am a template coming from the spring config file
- * : TesterService.invokePreActivityWithSpringProperty() invoked
- * : Setting security context
- * : TesterService.invokePostActivityWithReturnObject() invoked
- * : (PostActivity) [generic:] [BaseActivityParams()]: org.springframework.security.core.userdetails.User [Username=i_am_return_username, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, credentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[]]
- * : Setting security context
- * : (PreActivity) [generic:] [TesterActivityParams(tester_name=test_user, java_version=20.0.1, tester_spring_config=I am test_user, and I am parsed at param expression level)]: Test testPreActivity works!
- * : TesterService.invokePreActivity() invoked
- * : Setting security context
- * : (PreActivity) [generic:] [BaseActivityParams()]: Test environment prop works with tester.prop=Sample Prop
- * : TesterService.invokePreActivityWithEnvironmentProperty() invoked
- * : Setting security context
- * : (PreActivity) [generic:] [BaseActivityParams()]: Test pre post activity with return object
- * : TesterService.invokePrePostActivityWithReturnObject() invoked
- * : (PostActivity) [generic:] [BaseActivityParams()]: I am number two!
- * : Setting security context
- * : (PreActivity) [generic:] [BaseActivityParams()]: Test testPreActivityWithArgStrings Works!
- * : TesterService.invokePreActivityWithArgStrings() invoked with args: Test testPreActivityWithArgStrings, Works!
- * : Setting security context
- * : (PreActivity) [user:hello_arg_user] [BaseActivityParams()]: Test testPreActivityWithArgObjects with hello_arg_user
- * : TesterService.invokePreActivityWithArgObjects() invoked
- * : Setting security context
- * : Setting security context
- * : (PreActivity) [generic:] [BaseActivityParams()]: Test pre post activity with return object and error
- * : TesterService.invokePrePostErrorActivityWithReturnObject() invoked
- * : Error when proceeding joint point: I am a runtime exception message!
- * : Possibly an expected error, since error logging activity is fired
- * : (ErrorActivity) [generic:] [BaseActivityParams()]: Test error activity with return object and error
- * : Setting security context
- * : (PreActivity) [generic:] [BaseActivityParams()]: Test principal username with test_user
- * : TesterService.invokePreActivityWithAuthenticationPrincipalProperty() invoked
- */
 
 @Slf4j
 @SpringBootTest
@@ -70,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ActivityPocApplicationTests {
 
     @Autowired
-    private TesterService testerService;
+    private TestService testService;
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
@@ -80,7 +39,7 @@ class ActivityPocApplicationTests {
     @BeforeEach
     void testInitialize() {
         Assert.notNull(messageStack, "messageStack not initialized");
-        Assert.notNull(testerService, "testerService not initialized");
+        Assert.notNull(testService, "testService not initialized");
         Assert.notNull(applicationContext, "applicationContext not initialized");
 
         this.setSecurityContext();
@@ -90,63 +49,63 @@ class ActivityPocApplicationTests {
 
     @Test
     void testPreActivity() {
-        testerService.invokePreActivity();
+        testService.invokePreActivity();
         assertEquals(messageStack.size(), 1);
         assertEquals(messageStack.pop(), "Test testPreActivity works!");
     }
 
     @Test
     void testPreActivityWithArgStrings() {
-        testerService.invokePreActivityWithArgStrings("Test testPreActivityWithArgStrings", "Works!");
+        testService.invokePreActivityWithArgStrings("Test testPreActivityWithArgStrings", "Works!");
         assertEquals(messageStack.size(), 1);
         assertEquals(messageStack.pop(), "Test testPreActivityWithArgStrings Works!");
     }
 
     @Test
     void testPreActivityWithArgObjects() {
-        testerService.invokePreActivityWithArgObjects("Test testPreActivityWithArgObjects with", new User("hello_arg_user", "test_password", new HashSet<>()));
+        testService.invokePreActivityWithArgObjects("Test testPreActivityWithArgObjects with", new User("hello_arg_user", "test_password", new HashSet<>()));
         assertEquals(messageStack.size(), 1);
         assertEquals(messageStack.pop(), "Test testPreActivityWithArgObjects with hello_arg_user");
     }
 
     @Test
     void testPreActivityWithCustomParamClass() {
-        testerService.invokePreActivityWithCustomParamClass();
+        testService.invokePreActivityWithCustomParamClass();
         assertEquals(messageStack.size(), 1);
-        assertEquals(messageStack.pop(), "Test environment prop works with tester.prop=Sample Prop");
+        assertEquals(messageStack.pop(), "Test environment prop works with test.prop=Sample Prop");
     }
 
     @Test
     void testPreActivityWithEnvironmentProperty() {
-        testerService.invokePreActivityWithEnvironmentProperty();
+        testService.invokePreActivityWithEnvironmentProperty();
         assertEquals(messageStack.size(), 1);
-        assertEquals(messageStack.pop(), "Test environment prop works with tester.prop=Sample Prop");
+        assertEquals(messageStack.pop(), "Test environment prop works with test.prop=Sample Prop");
     }
 
     @Test
     void testPreActivityWithSystemProperty() {
-        testerService.invokePreActivityWithSystemProperty();
+        testService.invokePreActivityWithSystemProperty();
         assertEquals(messageStack.size(), 1);
         assertEquals(messageStack.pop(), "Test system prop works with C:\\Program Files\\Java\\jdk-20");
     }
 
     @Test
     void testPreActivityWithSpringProperty() {
-        testerService.invokePreActivityWithSpringProperty();
+        testService.invokePreActivityWithSpringProperty();
         assertEquals(messageStack.size(), 1);
         assertEquals(messageStack.pop(), "My name is test_user, and I am a template coming from the spring config file");
     }
 
     @Test
     void testPreActivityWithAuthenticationPrincipalProperty() {
-        testerService.invokePreActivityWithAuthenticationPrincipalProperty();
+        testService.invokePreActivityWithAuthenticationPrincipalProperty();
         assertEquals(messageStack.size(), 1);
         assertEquals(messageStack.pop(), "Test principal username with test_user");
     }
 
     @Test
     void testPostActivityWithReturnObject() {
-        User testReturn = testerService.invokePostActivityWithReturnObject();
+        User testReturn = testService.invokePostActivityWithReturnObject();
         assertEquals(testReturn.getUsername(), "i_am_return_username");
         assertEquals(messageStack.size(), 1);
         assertTrue(messageStack.pop().contains("org.springframework.security.core.userdetails.User"));
@@ -154,7 +113,7 @@ class ActivityPocApplicationTests {
 
     @Test
     void testPrePostActivityWithReturnObject() {
-        String testReturn = testerService.invokePrePostActivityWithReturnObject();
+        String testReturn = testService.invokePrePostActivityWithReturnObject();
         assertEquals(testReturn, "I am number two!");
         assertEquals(messageStack.size(), 2);
         assertEquals(messageStack.pop(), "I am number two!");
@@ -164,7 +123,7 @@ class ActivityPocApplicationTests {
     @Test
     void testPrePostErrorActivityWithReturnObject() {
         Exception exception = assertThrows(RuntimeException.class, () -> {
-            String testReturn = testerService.invokePrePostErrorActivityWithReturnObject();
+            String testReturn = testService.invokePrePostErrorActivityWithReturnObject();
             log.info("testReturn: {}", testReturn);
         });
         assertEquals(messageStack.size(), 2);
