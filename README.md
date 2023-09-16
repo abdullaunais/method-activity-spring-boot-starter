@@ -84,9 +84,9 @@ public String createUser(User user) {
 ```
 ```properties
 #application.properties
-activity.create-user.pre=Creating user with name: #user.name
-activity.create-user.post=Created user with name: #user.name with status: #result.status. Took #executionTime ms to complete
-activity.create-user.error=Failed to create user with name: #user.name with error: #exception.message
+activity.create-user.pre=Creating user with name #user.name
+activity.create-user.post=Created user with name #user.name. Took #executionTime ms to complete
+activity.create-user.error=Failed to create user with name #user.name with error: #exception.message
 ```
 &nbsp;
 &nbsp;
