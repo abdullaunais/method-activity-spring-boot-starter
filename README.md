@@ -73,6 +73,8 @@ public String createUser(User user){
 // [PostActivity] Created user with name: John Doe with status: SUCCESS. Took 100 ms to complete
 // [ErrorActivity] Failed to create user with name: John Doe with error: User already exists
 ```
+&nbsp;
+&nbsp;
 
 #### Template with SpEL Expression in a config file Approach
 ```java
@@ -92,7 +94,8 @@ activity.create-user.pre=Creating user with name: #user.name
 activity.create-user.post=Created user with name: #user.name with status: #result.status. Took #executionTime ms to complete
 activity.create-user.error=Failed to create user with name: #user.name with error: #exception.message
 ```
-
+&nbsp;
+&nbsp;
 #### Using the arguments passed to the method in the expression
 ```java
 @PreActivity("Searching for query: #query")
@@ -105,7 +108,8 @@ public void updateUser(String id, User user){...}
 // [PreActivity] Searching for query: spring boot
 // [PreActivity] Updating user with id: 123 and name: John Doe
 ```
-
+&nbsp;
+&nbsp;
 #### Making use of the authentication and return object in the expression
 ```java
 @PreActivity("Getting user #authentication.principal.username")
@@ -118,6 +122,9 @@ public User getUser(){
 // [PreActivity] Getting user john.doe@domain.io
 // [PostActivity] Successfully fetched user john.doe@domain with name: John Doe
 ```
+
+&nbsp;
+&nbsp;
 #### Including the bean variables and methods in the application context
 
 ```java
@@ -134,7 +141,8 @@ public String getDbInfo(){...}
 // [PreActivity] I am demo-service
 // [PreActivity] Database driver is com.mysql.jdbc.Driver
 ```
-
+&nbsp;
+&nbsp;
 
 ### Customizing the annotation
 You can customize the behavior by overriding the default values of the annotation. The following example shows how to override the default values of the annotation.
