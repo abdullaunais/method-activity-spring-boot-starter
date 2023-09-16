@@ -55,12 +55,6 @@ class MySpringApplication {
 
 #### Template with Plain SpEL Expression Approach
 ```java
-import io.github.abdullaunais.methodactivity.core.annotations.activity.ErrorActivity;
-import io.github.abdullaunais.methodactivity.core.annotations.activity.PostActivity;
-import io.github.abdullaunais.methodactivity.core.annotations.activity.PreActivity;
-
-...
-
 @PreActivity("Creating user with name: #user.name")
 @PostActivity("Created user with name: #user.name with status: #result.status. Took #executionTime ms to complete")
 @ErrorActivity("Failed to create user with name: #user.name with error: #exception.message")
@@ -149,11 +143,6 @@ You can customize the behavior by overriding the default values of the annotatio
 
 #### Configure activity level, paramClass and entity
 ```java
-import io.github.abdullaunais.methodactivity.core.annotations.activity.PostActivity;
-import io.github.abdullaunais.methodactivity.core.annotations.activity.PreActivity;
-import io.github.abdullaunais.methodactivity.core.annotations.param.ParamExpression;
-import io.github.abdullaunais.methodactivity.core.domain.ActivityLevel;
-
 
 @PreActivity(value = "Invoked method: #methodName", level = ActivityLevel.TRACE)
 public String createUser(User user){...}
@@ -164,7 +153,7 @@ public String createUser(User user){...}
 public TransactionResponse doFundTransfer(Transaction transaction) {...}
 
 @Data
-public class TransactionParams {
+public class TransactionParams extends BaseActivityParams {
    @ParamExpression("#transaction.amount")
    private String amount;
    @ParamExpression("#transaction.currency")
@@ -181,13 +170,6 @@ public class TransactionParams {
 You can configure the listener to listen to activity events. The default listener logs the activity events to the console. You can configure your own listener by implementing `ActivityEventListener` interface and registering it as a bean.
 
 ```java
-import io.github.abdullaunais.methodactivity.core.domain.ActivityType;
-import io.github.abdullaunais.methodactivity.core.listener.ActivityEventListener;
-import io.github.abdullaunais.methodactivity.core.domain.ActivityAnnotationData;
-import io.github.abdullaunais.methodactivity.core.domain.ActivityType;
-import io.github.abdullaunais.methodactivity.core.domain.ParsedActivity;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
