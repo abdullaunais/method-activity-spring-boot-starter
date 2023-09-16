@@ -149,7 +149,7 @@ You can customize the behavior by overriding the default values of the annotatio
 #### Configure activity level, paramClass and entity
 ```java
 
-@PreActivity(value = "Invoked #simpleClassName + '.' + #methodName + '(' + #arg1 + ')'", level = ActivityLevel.TRACE)
+@PreActivity(value = "Invoked #simpleClassName + '.' + #methodName + '(' + #id + ')'", level = ActivityLevel.TRACE)
 public String getData(Integer id) { ... }
 
 // [PreActivity] Invoked DataService.getData(123)
