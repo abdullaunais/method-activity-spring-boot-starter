@@ -16,6 +16,11 @@ public class TesterSlf4jActivityProvider implements IActivityProvider {
     @Override
     public void send(ParsedActivity<?> parsedActivity, Annotation annotation, ActivityLevel level) {
         log.atLevel(Level.intToLevel(level.toInt()))
-                .log("({}) [{}]: {}", annotation.annotationType().getSimpleName(), parsedActivity.getParams(), parsedActivity.getActivity());
+                .log("({}) [{}:{}] [{}]: {}",
+                        annotation.annotationType().getSimpleName(),
+                        parsedActivity.getEntity(),
+                        parsedActivity.getEntityId(),
+                        parsedActivity.getParams(),
+                        parsedActivity.getActivity());
     }
 }

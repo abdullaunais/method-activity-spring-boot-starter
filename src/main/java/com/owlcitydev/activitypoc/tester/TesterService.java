@@ -31,7 +31,7 @@ public class TesterService {
         log.debug("TesterService.testPreActivityWithArgStrings() invoked with args: {}, {}", arg1, arg2);
     }
 
-    @PreActivity("#arg1 + ' ' + #user?.username")
+    @PreActivity(value = "#arg1 + ' ' + #user?.username", entity = "user", entityId = "#user?.username")
     public void testPreActivityWithArgObjects(String arg1, @ExpressionAlias("user") User user2) {
         log.debug("TesterService.testPreActivityWithArgObjects() invoked");
     }

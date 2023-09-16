@@ -3,7 +3,7 @@ package com.owlcitydev.activitypoc.activity.aspect;
 import com.owlcitydev.activitypoc.activity.annotations.activity.ErrorActivity;
 import com.owlcitydev.activitypoc.activity.annotations.activity.PostActivity;
 import com.owlcitydev.activitypoc.activity.annotations.activity.PreActivity;
-import com.owlcitydev.activitypoc.activity.domain.ActivityLevel;
+import com.owlcitydev.activitypoc.activity.domain.ActivityAnnotationData;
 import com.owlcitydev.activitypoc.activity.domain.ParsedActivity;
 import com.owlcitydev.activitypoc.activity.parser.IActivityParser;
 import com.owlcitydev.activitypoc.activity.provider.ActivityProviderAdaptor;
@@ -44,14 +44,15 @@ public class ActivityAspects {
     public Object preActivity(ProceedingJoinPoint proceedingJoinPoint, PreActivity preActivity) throws Throwable {
         log.trace("invoked ActivityAspects.preActivity");
         try {
-            String activityTemplate = preActivity.value();
-            log.debug("activityTemplate: {}", activityTemplate);
-            ActivityLevel activityLevel = preActivity.level();
-            log.debug("activityLevel: {}", activityLevel);
-            Class<?> paramClass = preActivity.paramClass();
-            log.debug("paramClass: {}", paramClass.getSimpleName());
-            ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, paramClass, proceedingJoinPoint);
-            activityProviderAdaptor.send(activity, preActivity, activityLevel);
+            ActivityAnnotationData annotationData = ActivityAnnotationData.builder()
+                    .withTemplate(preActivity.value())
+                    .withEntity(preActivity.entity())
+                    .withEntityId(preActivity.entityId())
+                    .withParamClass(preActivity.paramClass())
+                    .withLevel(preActivity.level())
+                    .build();
+            ParsedActivity<?> activity = activityParser.parseActivity(annotationData, proceedingJoinPoint);
+            activityProviderAdaptor.send(activity, preActivity, annotationData);
         } catch (Exception e) {
             log.error("Exception in preActivity: ", e);
         }
@@ -63,14 +64,16 @@ public class ActivityAspects {
         log.trace("invoked ActivityAspects.postActivity");
         Object returnObject = proceedingJoinPoint.proceed();
         try {
-            String activityTemplate = postActivity.value();
-            log.debug("activityTemplate: {}", activityTemplate);
-            ActivityLevel activityLevel = postActivity.level();
-            log.debug("activityLevel: {}", activityLevel);
-            Class<?> paramClass = postActivity.paramClass();
-            log.debug("paramClass: {}", paramClass.getSimpleName());
-            ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, paramClass, proceedingJoinPoint, returnObject);
-            activityProviderAdaptor.send(activity, postActivity, activityLevel);
+            ActivityAnnotationData annotationData = ActivityAnnotationData.builder()
+                    .withTemplate(postActivity.value())
+                    .withEntity(postActivity.entity())
+                    .withEntityId(postActivity.entityId())
+                    .withParamClass(postActivity.paramClass())
+                    .withLevel(postActivity.level())
+                    .build();
+
+            ParsedActivity<?> activity = activityParser.parseActivity(annotationData, proceedingJoinPoint, returnObject);
+            activityProviderAdaptor.send(activity, postActivity, annotationData);
         } catch (Exception e) {
             log.error("Exception in postActivity: ", e);
         }
@@ -87,14 +90,16 @@ public class ActivityAspects {
             log.trace("Error when proceeding joint point: ", t);
             log.error("Possibly an expected error, since error logging activity is fired");
             try {
-                String activityTemplate = errorActivity.value();
-                log.debug("activityTemplate: {}", activityTemplate);
-                ActivityLevel activityLevel = errorActivity.level();
-                log.debug("activityLevel: {}", activityLevel);
-                Class<?> paramClass = errorActivity.paramClass();
-                log.debug("paramClass: {}", paramClass.getSimpleName());
-                ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, paramClass, proceedingJoinPoint);
-                activityProviderAdaptor.send(activity, errorActivity, activityLevel);
+                ActivityAnnotationData annotationData = ActivityAnnotationData.builder()
+                        .withTemplate(errorActivity.value())
+                        .withEntity(errorActivity.entity())
+                        .withEntityId(errorActivity.entityId())
+                        .withParamClass(errorActivity.paramClass())
+                        .withLevel(errorActivity.level())
+                        .build();
+
+                ParsedActivity<?> activity = activityParser.parseActivity(annotationData, proceedingJoinPoint);
+                activityProviderAdaptor.send(activity, errorActivity, annotationData);
             } catch (Exception e) {
                 log.error("Exception in errorActivity: ", e);
             }

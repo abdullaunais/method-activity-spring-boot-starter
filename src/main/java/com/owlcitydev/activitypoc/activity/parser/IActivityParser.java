@@ -1,10 +1,11 @@
 package com.owlcitydev.activitypoc.activity.parser;
 
+import com.owlcitydev.activitypoc.activity.domain.ActivityAnnotationData;
 import com.owlcitydev.activitypoc.activity.domain.ParsedActivity;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 public interface IActivityParser {
-    <T> ParsedActivity<T> parseActivity(String activityTemplate, Class<?> paramClass, ProceedingJoinPoint proceedingJoinPoint, Object returnObject);
+    <T> ParsedActivity<T> parseActivity(ActivityAnnotationData annotationData, ProceedingJoinPoint proceedingJoinPoint, Object returnObject);
 
-    <T> ParsedActivity<T> parseActivity(String activityTemplate, Class<?> paramClass, ProceedingJoinPoint proceedingJoinPoint);
+    <T> ParsedActivity<T> parseActivity(ActivityAnnotationData annotationData, ProceedingJoinPoint proceedingJoinPoint);
 }

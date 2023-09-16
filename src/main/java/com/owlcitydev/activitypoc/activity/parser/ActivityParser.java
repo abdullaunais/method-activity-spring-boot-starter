@@ -3,6 +3,7 @@ package com.owlcitydev.activitypoc.activity.parser;
 import com.owlcitydev.activitypoc.activity.annotations.param.ExpressionAlias;
 import com.owlcitydev.activitypoc.activity.annotations.param.ParamExpression;
 import com.owlcitydev.activitypoc.activity.configuration.ActivityConfiguration;
+import com.owlcitydev.activitypoc.activity.domain.ActivityAnnotationData;
 import com.owlcitydev.activitypoc.activity.domain.ParsedActivity;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -32,7 +33,7 @@ public class ActivityParser implements IActivityParser {
     }
 
     @Override
-    public <T> ParsedActivity<T> parseActivity(String activityTemplate, Class<?> paramClass, ProceedingJoinPoint proceedingJoinPoint, Object returnObject) {
+    public <T> ParsedActivity<T> parseActivity(ActivityAnnotationData annotationData, ProceedingJoinPoint proceedingJoinPoint, Object returnObject) {
         log.trace("pointcut argument size: {}", proceedingJoinPoint.getArgs().length);
         StandardEvaluationContext context = new StandardEvaluationContext();
         context.setBeanResolver(new BeanFactoryResolver(this.applicationContext));
@@ -67,13 +68,15 @@ public class ActivityParser implements IActivityParser {
         context.setVariable("authentication", SecurityContextHolder.getContext().getAuthentication());
         Optional.ofNullable(returnObject).ifPresent(obj -> context.setVariable("returnObject", obj));
 
-        Object activityObj = expressionParser.parseExpression(activityTemplate)
+        Object activityObj = expressionParser.parseExpression(annotationData.getTemplate())
                 .getValue(context, applicationContext, Object.class);
+        String entityId = expressionParser.parseExpression(annotationData.getEntityId())
+                .getValue(context, applicationContext, String.class);
 
         try {
             T activityParams = ParsedActivity
-                    .createInstance(paramClass);
-            Arrays.stream(paramClass.getDeclaredFields())
+                    .createInstance(annotationData.getParamClass());
+            Arrays.stream(annotationData.getParamClass().getDeclaredFields())
                     .forEach(field -> {
                         ParamExpression paramExpression = field.getAnnotation(ParamExpression.class);
                         Optional.ofNullable(paramExpression)
@@ -91,6 +94,8 @@ public class ActivityParser implements IActivityParser {
             ParsedActivity<T> parsedActivity = new ParsedActivity<>();
             parsedActivity.setActivity(Optional.ofNullable(activityObj).orElse("").toString());
             parsedActivity.setParams(activityParams);
+            parsedActivity.setEntityId(entityId);
+            parsedActivity.setEntity(annotationData.getEntity());
             return parsedActivity;
         } catch (Exception e) {
             log.error("Exception in creating activity params instance: ", e);
@@ -99,8 +104,8 @@ public class ActivityParser implements IActivityParser {
     }
 
     @Override
-    public <T> ParsedActivity<T> parseActivity(String activityTemplate, Class<?> paramClass, ProceedingJoinPoint proceedingJoinPoint) {
-        return this.parseActivity(activityTemplate, paramClass, proceedingJoinPoint, null);
+    public <T> ParsedActivity<T> parseActivity(ActivityAnnotationData annotationData, ProceedingJoinPoint proceedingJoinPoint) {
+        return this.parseActivity(annotationData, proceedingJoinPoint, null);
     }
 
 
