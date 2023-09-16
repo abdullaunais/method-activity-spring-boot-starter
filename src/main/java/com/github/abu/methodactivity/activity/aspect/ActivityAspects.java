@@ -62,7 +62,9 @@ public class ActivityAspects {
     @Around(value = "postActivityAnnotationPointcut(postActivity)", argNames = "proceedingJoinPoint,postActivity")
     public Object postActivity(ProceedingJoinPoint proceedingJoinPoint, PostActivity postActivity) throws Throwable {
         log.trace("invoked ActivityAspects.postActivity");
+        long start = System.currentTimeMillis();
         Object returnObject = proceedingJoinPoint.proceed();
+        long executionTime = System.currentTimeMillis() - start;
         try {
             ActivityAnnotationData annotationData = ActivityAnnotationData.builder()
                     .withTemplate(postActivity.value())
@@ -72,7 +74,7 @@ public class ActivityAspects {
                     .withLevel(postActivity.level())
                     .build();
 
-            ParsedActivity<?> activity = activityParser.parseActivity(annotationData, proceedingJoinPoint, returnObject);
+            ParsedActivity<?> activity = activityParser.parseActivity(annotationData, proceedingJoinPoint, returnObject, executionTime);
             activityProviderAdaptor.send(activity, postActivity, annotationData);
         } catch (Exception e) {
             log.error("Exception in postActivity: ", e);

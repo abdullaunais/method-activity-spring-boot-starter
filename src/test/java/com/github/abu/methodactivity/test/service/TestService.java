@@ -70,6 +70,11 @@ public class TestService {
         return new User("i_am_return_username", "return_pwd", new HashSet<>());
     }
 
+    @PostActivity(value = "'I have executed in ' + #executionTime + ' ms'", paramClass = TestActivityParams.class)
+    public void invokePostActivityExecutionTimeCalculation() {
+        log.debug("TestService.invokePostActivityExecutionTimeCalculation() invoked");
+    }
+
     @PreActivity("'Test pre post activity with return object'")
     @PostActivity("#returnObject")
     public String invokePrePostActivityWithReturnObject() {

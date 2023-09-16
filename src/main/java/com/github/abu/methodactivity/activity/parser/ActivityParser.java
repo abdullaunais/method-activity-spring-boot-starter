@@ -25,18 +25,20 @@ import java.util.stream.IntStream;
 @Slf4j
 @Component
 public class ActivityParser implements IActivityParser {
+    private final ActivityConfiguration activityConfiguration;
     private final ApplicationContext applicationContext;
     private final ExpressionParser expressionParser;
     private final Environment environment;
 
     public ActivityParser(ActivityConfiguration activityConfiguration, ApplicationContext applicationContext, Environment environment) {
+        this.activityConfiguration = activityConfiguration;
         this.applicationContext = applicationContext;
         this.expressionParser = activityConfiguration.getExpressionParser();
         this.environment = environment;
     }
 
     @Override
-    public <T> ParsedActivity<T> parseActivity(ActivityAnnotationData annotationData, ProceedingJoinPoint proceedingJoinPoint, Object returnObject) {
+    public <T> ParsedActivity<T> parseActivity(ActivityAnnotationData annotationData, ProceedingJoinPoint proceedingJoinPoint, Object returnObject, Long executionTime) {
         log.trace("pointcut argument size: {}", proceedingJoinPoint.getArgs().length);
         StandardEvaluationContext context = new StandardEvaluationContext();
         context.setBeanResolver(new BeanFactoryResolver(this.applicationContext));
@@ -68,8 +70,12 @@ public class ActivityParser implements IActivityParser {
                     context.setVariable(argName, proceedingJoinPoint.getArgs()[index]);
                 });
 
-        context.setVariable("authentication", SecurityContextHolder.getContext().getAuthentication());
-        Optional.ofNullable(returnObject).ifPresent(obj -> context.setVariable("returnObject", obj));
+        ActivityConfiguration.DefaultVariables variableNames = activityConfiguration.getVariableNames();
+        context.setVariable(variableNames.getAuthenticationVariableName(), SecurityContextHolder.getContext().getAuthentication());
+        Optional.ofNullable(returnObject)
+                .ifPresent(obj -> context.setVariable(variableNames.getReturnObjectVariableName(), obj));
+        Optional.ofNullable(executionTime)
+                .ifPresent(time -> context.setVariable(variableNames.getExecutionTimeVariableName(), time));
 
         String templateStr = annotationData.getTemplate();
         if (templateStr.startsWith("$")) {
@@ -115,7 +121,7 @@ public class ActivityParser implements IActivityParser {
 
     @Override
     public <T> ParsedActivity<T> parseActivity(ActivityAnnotationData annotationData, ProceedingJoinPoint proceedingJoinPoint) {
-        return this.parseActivity(annotationData, proceedingJoinPoint, null);
+        return this.parseActivity(annotationData, proceedingJoinPoint, null, null);
     }
 
 

@@ -14,4 +14,6 @@ public class TestActivityParams extends BaseActivityParams {
     private String java_version;
     @ParamExpression("${test.parse-at-param-class}")
     private String test_spring_config;
+    @ParamExpression("#executionTime")
+    private Long executionTime;
 }

@@ -6,7 +6,6 @@ import com.github.abu.methodactivity.test.providers.TestMessageStackActivityProv
 import com.github.abu.methodactivity.test.providers.TestSlf4jActivityProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import java.util.List;
 import java.util.Stack;
@@ -15,10 +14,12 @@ import java.util.Stack;
 public class TestActivityBeanConfig {
     @Bean
     public ActivityConfiguration activityConfiguration(Stack<String> messageStack) {
-        return ActivityConfiguration.builder()
-                .activityLevel(ActivityLevel.DEBUG)
-                .registeredActivityProviders(List.of(new TestSlf4jActivityProvider(), new TestMessageStackActivityProvider(messageStack)))
-                .expressionParser(new SpelExpressionParser())
+        return ActivityConfiguration.configure()
+                .withActivityLevel(ActivityLevel.DEBUG)
+                .withRegisteredActivityProviders(List.of(new TestSlf4jActivityProvider(), new TestMessageStackActivityProvider(messageStack)))
+                .withVariableNames(ActivityConfiguration.DefaultVariables.configure()
+                        .executionTimeVariableName("executionTime")
+                        .build())
                 .build();
     }
 

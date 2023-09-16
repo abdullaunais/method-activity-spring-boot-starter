@@ -112,6 +112,17 @@ class SpringBootMethodActivityApplicationTests {
     }
 
     @Test
+    void testPostActivityExecutionTimeCalculation() {
+        testService.invokePostActivityExecutionTimeCalculation();
+        assertEquals(messageStack.size(), 1);
+        String message = messageStack.pop();
+        assertTrue(message.contains("I have executed in"));
+        assertTrue(message.contains(" ms"));
+        assertTrue(message.split(" ")[4].chars().allMatch(Character::isDigit));
+
+    }
+
+    @Test
     void testPrePostActivityWithReturnObject() {
         String testReturn = testService.invokePrePostActivityWithReturnObject();
         assertEquals(testReturn, "I am number two!");
