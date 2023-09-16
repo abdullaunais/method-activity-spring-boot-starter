@@ -1,7 +1,7 @@
 package io.github.abdullaunais.methodactivity.core.annotations.activity;
 
+import io.github.abdullaunais.methodactivity.core.annotations.param.BaseActivityParams;
 import io.github.abdullaunais.methodactivity.core.domain.ActivityLevel;
-import io.github.abdullaunais.methodactivity.core.annotations.param.PostActivityParams;
 
 import java.lang.annotation.*;
 
@@ -16,7 +16,7 @@ public @interface PostActivity {
 
     String entityId() default "''";
 
-    Class<? extends PostActivityParams> paramClass() default PostActivityParams.class;
+    Class<? extends BaseActivityParams> paramClass() default BaseActivityParams.class;
 
     ActivityLevel level() default ActivityLevel.INFO;
 }

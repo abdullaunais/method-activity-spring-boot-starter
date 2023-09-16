@@ -29,11 +29,11 @@ public class ActivityEventAdaptor {
                 .forEach(activityProvider -> {
                     switch (activityType) {
                         case PreActivity ->
-                                activityProvider.onPreActivity(parsedActivity, activityType, annotationData);
+                                activityProvider.onPreActivity(parsedActivity, annotationData);
                         case PostActivity ->
-                                activityProvider.onPostActivity(parsedActivity, activityType, annotationData);
+                                activityProvider.onPostActivity(parsedActivity, annotationData);
                         case ErrorActivity ->
-                                activityProvider.onErrorActivity(parsedActivity, activityType, annotationData);
+                                activityProvider.onErrorActivity(parsedActivity, annotationData);
                         default -> throw new IllegalStateException("Unexpected activity type: " + activityType);
                     }
                 });

@@ -5,6 +5,7 @@ import io.github.abdullaunais.methodactivity.core.annotations.param.*;
 import io.github.abdullaunais.methodactivity.core.configuration.ActivityConfiguration;
 import io.github.abdullaunais.methodactivity.core.configuration.DefaultVariables;
 import io.github.abdullaunais.methodactivity.core.domain.ActivityAnnotationData;
+import io.github.abdullaunais.methodactivity.core.domain.ActivityType;
 import io.github.abdullaunais.methodactivity.core.domain.ParsedActivity;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -26,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
 @Slf4j
@@ -46,7 +46,7 @@ public class ActivityParser implements IActivityParser {
     }
 
     @Override
-    public <T extends BaseActivityParams> ParsedActivity<T> parseActivity(ActivityAnnotationData annotationData, ProceedingJoinPoint proceedingJoinPoint, T activityParams) {
+    public <T extends BaseActivityParams> ParsedActivity<T> parseActivity(ActivityType activityType, ActivityAnnotationData annotationData, ProceedingJoinPoint proceedingJoinPoint, T activityParams) {
         log.trace("pointcut argument size: {}", proceedingJoinPoint.getArgs().length);
         StandardEvaluationContext context = new StandardEvaluationContext();
         context.setBeanResolver(new BeanFactoryResolver(this.applicationContext));
@@ -86,15 +86,19 @@ public class ActivityParser implements IActivityParser {
             context.setVariable(variableNames.getAuthenticationVariable(), SecurityContextHolder.getContext().getAuthentication());
         }
 
-        if (activityParams instanceof PostActivityParams p) {
-            Optional.ofNullable(p.getReturnObject())
-                    .ifPresent(obj -> context.setVariable(variableNames.getReturnObjectVariable(), obj));
-            Optional.ofNullable(p.getExecutionTime())
-                    .ifPresent(time -> context.setVariable(variableNames.getExecutionTimeVariable(), time));
-        } else if (activityParams instanceof ErrorActivityParams p) {
-            Optional.ofNullable(p.getException())
-                    .ifPresent(ex -> context.setVariable(variableNames.getExceptionVariable(), ex));
+        switch (activityType) {
+            case PostActivity -> {
+                Optional.ofNullable(activityParams.getReturnObject())
+                        .ifPresent(obj -> context.setVariable(variableNames.getReturnObjectVariable(), obj));
+                Optional.ofNullable(activityParams.getExecutionTime())
+                        .ifPresent(time -> context.setVariable(variableNames.getExecutionTimeVariable(), time));
+            }
+            case ErrorActivity -> {
+                Optional.ofNullable(activityParams.getException())
+                        .ifPresent(ex -> context.setVariable(variableNames.getExceptionVariable(), ex));
+            }
         }
+
 
         context.setVariable(variableNames.getMethodNameVariable(), methodName);
         context.setVariable(variableNames.getFullClassNameVariable(), fullClassName);

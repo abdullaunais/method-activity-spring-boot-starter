@@ -1,6 +1,6 @@
 package io.github.abdullaunais.methodactivity.core.domain;
 
-import io.github.abdullaunais.methodactivity.core.annotations.param.PostActivityParams;
+import io.github.abdullaunais.methodactivity.core.annotations.param.BaseActivityParams;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,7 +14,7 @@ public class ActivityAnnotationData {
     @Builder.Default
     private String entityId = "''";
     @Builder.Default
-    private Class<?> paramClass = PostActivityParams.class;
+    private Class<?> paramClass = BaseActivityParams.class;
     @Builder.Default
     private ActivityLevel level = ActivityLevel.ERROR;
 }

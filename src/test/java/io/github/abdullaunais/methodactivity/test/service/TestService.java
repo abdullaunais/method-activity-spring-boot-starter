@@ -5,8 +5,7 @@ import io.github.abdullaunais.methodactivity.core.annotations.activity.PostActiv
 import io.github.abdullaunais.methodactivity.core.annotations.activity.PreActivity;
 import io.github.abdullaunais.methodactivity.core.annotations.param.ExpressionAlias;
 import io.github.abdullaunais.methodactivity.core.domain.ActivityLevel;
-import io.github.abdullaunais.methodactivity.test.paramclasses.TestPostActivityParams;
-import io.github.abdullaunais.methodactivity.test.paramclasses.TestPreActivityParams;
+import io.github.abdullaunais.methodactivity.test.paramclasses.TestActivityParams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
@@ -22,7 +21,7 @@ public class TestService {
     @Value("${test.throw-exception}")
     private boolean throwException;
 
-    @PreActivity(value = "new String('Test testPreActivity works!')", paramClass = TestPreActivityParams.class)
+    @PreActivity(value = "new String('Test testPreActivity works!')", paramClass = TestActivityParams.class)
     public void invokePreActivity() {
         log.debug("TestService.invokePreActivity() invoked");
     }
@@ -31,6 +30,7 @@ public class TestService {
     public void invokePreActivityWithArgStrings(String arg1, String arg2) {
         log.debug("TestService.invokePreActivityWithArgStrings() invoked with args: {}, {}", arg1, arg2);
     }
+
     @PreActivity("#simpleClassName + '.' + #methodName + '(' + #arg1 + ', ' + #arg2 + ')'")
     public void invokePreActivityWithBaseParams(String arg1, String arg2) {
         log.debug("TestService.invokePreActivityWithBaseParams() invoked with args: {}, {}", arg1, arg2);
@@ -41,7 +41,8 @@ public class TestService {
         log.debug("TestService.invokePreActivityWithArgObjects() invoked");
     }
 
-    @PreActivity(value = "'Test environment prop works with test.prop=' + @environment.getProperty('test.prop')", paramClass = TestPreActivityParams.class)
+
+    @PreActivity(value = "'Test environment prop works with test.prop=' + @environment.getProperty('test.prop')", paramClass = TestActivityParams.class)
     public void invokePreActivityWithCustomParamClass() {
         log.debug("TestService.invokePreActivityWithCustomParamClass() invoked");
     }
@@ -75,7 +76,7 @@ public class TestService {
         return new User("i_am_return_username", "return_pwd", new HashSet<>());
     }
 
-    @PostActivity(value = "'I have executed in ' + #executionTime + ' ms'", paramClass = TestPostActivityParams.class)
+    @PostActivity(value = "'I have executed in ' + #executionTime + ' ms'", paramClass = TestActivityParams.class)
     public String invokePostActivityExecutionTimeCalculation() {
         log.debug("TestService.invokePostActivityExecutionTimeCalculation() invoked");
         return "bla bla blah";

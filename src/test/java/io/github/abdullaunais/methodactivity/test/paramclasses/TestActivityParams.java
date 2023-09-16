@@ -1,8 +1,7 @@
 package io.github.abdullaunais.methodactivity.test.paramclasses;
 
+import io.github.abdullaunais.methodactivity.core.annotations.param.BaseActivityParams;
 import io.github.abdullaunais.methodactivity.core.annotations.param.ParamExpression;
-import io.github.abdullaunais.methodactivity.core.annotations.param.PostActivityParams;
-import io.github.abdullaunais.methodactivity.core.annotations.param.PreActivityParams;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -10,7 +9,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class TestPostActivityParams extends PostActivityParams {
+public class TestActivityParams extends BaseActivityParams {
     @ParamExpression("#authentication.principal.username")
     private String test_user;
     @ParamExpression("@systemProperties['java.version']")

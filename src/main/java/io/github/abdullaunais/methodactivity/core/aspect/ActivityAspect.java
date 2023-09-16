@@ -1,18 +1,15 @@
 package io.github.abdullaunais.methodactivity.core.aspect;
 
+import io.github.abdullaunais.methodactivity.autoconfigure.EnableMethodActivity;
 import io.github.abdullaunais.methodactivity.core.annotations.activity.ErrorActivity;
 import io.github.abdullaunais.methodactivity.core.annotations.activity.PostActivity;
 import io.github.abdullaunais.methodactivity.core.annotations.activity.PreActivity;
-import io.github.abdullaunais.methodactivity.autoconfigure.EnableMethodActivity;
 import io.github.abdullaunais.methodactivity.core.annotations.param.BaseActivityParams;
-import io.github.abdullaunais.methodactivity.core.annotations.param.ErrorActivityParams;
-import io.github.abdullaunais.methodactivity.core.annotations.param.PostActivityParams;
-import io.github.abdullaunais.methodactivity.core.annotations.param.PreActivityParams;
 import io.github.abdullaunais.methodactivity.core.domain.ActivityAnnotationData;
 import io.github.abdullaunais.methodactivity.core.domain.ActivityType;
 import io.github.abdullaunais.methodactivity.core.domain.ParsedActivity;
-import io.github.abdullaunais.methodactivity.core.parser.IActivityParser;
 import io.github.abdullaunais.methodactivity.core.event.ActivityEventAdaptor;
+import io.github.abdullaunais.methodactivity.core.parser.IActivityParser;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -61,8 +58,8 @@ public class ActivityAspect {
                     .build();
             log.trace("created annotation data for PreActivity");
             ActivityType activityType = ActivityType.PreActivity;
-            PreActivityParams preActivityParams = preActivity.paramClass().getDeclaredConstructor().newInstance();
-            ParsedActivity<PreActivityParams> activity = activityParser.parseActivity(annotationData, proceedingJoinPoint, preActivityParams);
+            BaseActivityParams activityParams = preActivity.paramClass().getDeclaredConstructor().newInstance();
+            ParsedActivity<BaseActivityParams> activity = activityParser.parseActivity(activityType, annotationData, proceedingJoinPoint, activityParams);
             activityProviderAdaptor.sendQualifiedEvent(activity, activityType, annotationData);
         } catch (Exception e) {
             log.error("Exception in preActivity: ", e);
@@ -86,10 +83,10 @@ public class ActivityAspect {
                     .build();
             log.trace("created annotation data for PostActivity");
             ActivityType activityType = ActivityType.PostActivity;
-            PostActivityParams postActivityParams = postActivity.paramClass().getDeclaredConstructor().newInstance();
-            postActivityParams.setExecutionTime(executionTime);
-            postActivityParams.setReturnObject(returnObject);
-            ParsedActivity<PostActivityParams> activity = activityParser.parseActivity(annotationData, proceedingJoinPoint, postActivityParams);
+            BaseActivityParams activityParams = postActivity.paramClass().getDeclaredConstructor().newInstance();
+            activityParams.setExecutionTime(executionTime);
+            activityParams.setReturnObject(returnObject);
+            ParsedActivity<BaseActivityParams> activity = activityParser.parseActivity(activityType, annotationData, proceedingJoinPoint, activityParams);
             activityProviderAdaptor.sendQualifiedEvent(activity, activityType, annotationData);
         } catch (Exception e) {
             log.error("Exception in postActivity: ", e);
@@ -116,9 +113,9 @@ public class ActivityAspect {
                         .build();
                 log.trace("created annotation data for ErrorActivity");
                 ActivityType activityType = ActivityType.ErrorActivity;
-                ErrorActivityParams errorActivityParams = errorActivity.paramClass().getDeclaredConstructor().newInstance();
-                errorActivityParams.setException(t);
-                ParsedActivity<ErrorActivityParams> activity = activityParser.parseActivity(annotationData, proceedingJoinPoint, errorActivityParams);
+                BaseActivityParams activityParams = errorActivity.paramClass().getDeclaredConstructor().newInstance();
+                activityParams.setException(t);
+                ParsedActivity<BaseActivityParams> activity = activityParser.parseActivity(activityType, annotationData, proceedingJoinPoint, activityParams);
                 activityProviderAdaptor.sendQualifiedEvent(activity, activityType, annotationData);
             } catch (Exception e) {
                 log.error("Exception in errorActivity: ", e);
