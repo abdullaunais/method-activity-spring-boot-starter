@@ -17,20 +17,14 @@ public enum ActivityLevel {
     }
 
     public static ActivityLevel intToLevel(int levelInt) {
-        switch (levelInt) {
-            case 0:
-                return TRACE;
-            case 10:
-                return DEBUG;
-            case 20:
-                return INFO;
-            case 30:
-                return WARN;
-            case 40:
-                return ERROR;
-            default:
-                throw new IllegalArgumentException("Level integer [" + levelInt + "] not recognized.");
-        }
+        return switch (levelInt) {
+            case 0 -> TRACE;
+            case 10 -> DEBUG;
+            case 20 -> INFO;
+            case 30 -> WARN;
+            case 40 -> ERROR;
+            default -> throw new IllegalArgumentException("Level integer [" + levelInt + "] not recognized.");
+        };
     }
 
     public int toInt() {
