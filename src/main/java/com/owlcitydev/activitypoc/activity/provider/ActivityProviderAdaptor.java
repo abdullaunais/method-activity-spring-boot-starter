@@ -1,9 +1,9 @@
 package com.owlcitydev.activitypoc.activity.provider;
 
-import com.owlcitydev.activitypoc.activity.configuration.ActivityConfiguration;
-import com.owlcitydev.activitypoc.activity.domain.ParsedActivity;
 import com.owlcitydev.activitypoc.activity.annotations.provider.ActivityProvider;
-import org.slf4j.event.Level;
+import com.owlcitydev.activitypoc.activity.configuration.ActivityConfiguration;
+import com.owlcitydev.activitypoc.activity.domain.ActivityLevel;
+import com.owlcitydev.activitypoc.activity.domain.ParsedActivity;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
@@ -16,9 +16,10 @@ public class ActivityProviderAdaptor {
         this.activityConfiguration = activityConfiguration;
     }
 
-    public void send(ParsedActivity<?> activity, Annotation annotation, Level level) {
+    public void send(ParsedActivity<?> activity, Annotation annotation, ActivityLevel level) {
         activityConfiguration.getRegisteredActivityProviders().stream()
                 .filter(activityProvider -> activityProvider.getClass().isAnnotationPresent(ActivityProvider.class))
+                .filter(activityProvider -> level.toInt() >= activityConfiguration.getActivityLevel().toInt())
                 .forEach(activityProvider -> activityProvider.send(activity, annotation, level));
 
     }

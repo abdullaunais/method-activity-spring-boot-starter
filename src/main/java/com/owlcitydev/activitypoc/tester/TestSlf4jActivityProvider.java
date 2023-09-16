@@ -1,6 +1,7 @@
 package com.owlcitydev.activitypoc.tester;
 
 import com.owlcitydev.activitypoc.activity.annotations.provider.ActivityProvider;
+import com.owlcitydev.activitypoc.activity.domain.ActivityLevel;
 import com.owlcitydev.activitypoc.activity.domain.ParsedActivity;
 import com.owlcitydev.activitypoc.activity.provider.IActivityProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,8 @@ import java.lang.annotation.Annotation;
 public class TestSlf4jActivityProvider implements IActivityProvider {
 
     @Override
-    public void send(ParsedActivity<?> parsedActivity, Annotation annotation, Level level) {
-        log.atLevel(level).log("({}) [{}]: {}", annotation.annotationType().getSimpleName(), parsedActivity.getParams(), parsedActivity.getActivity());
+    public void send(ParsedActivity<?> parsedActivity, Annotation annotation, ActivityLevel level) {
+        log.atLevel(Level.intToLevel(level.toInt()))
+                .log("({}) [{}]: {}", annotation.annotationType().getSimpleName(), parsedActivity.getParams(), parsedActivity.getActivity());
     }
 }

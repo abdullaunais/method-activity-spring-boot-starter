@@ -1,6 +1,6 @@
 package com.owlcitydev.activitypoc.activity.annotations.activity;
 
-import org.slf4j.event.Level;
+import com.owlcitydev.activitypoc.activity.domain.ActivityLevel;
 
 import java.lang.annotation.*;
 
@@ -11,5 +11,5 @@ import java.lang.annotation.*;
 public @interface ErrorActivity {
     String value();
 
-    Level level() default Level.ERROR;
+    ActivityLevel level() default ActivityLevel.ERROR;
 }

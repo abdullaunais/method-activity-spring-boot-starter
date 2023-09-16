@@ -3,14 +3,13 @@ package com.owlcitydev.activitypoc.tester;
 import com.owlcitydev.activitypoc.activity.annotations.activity.ErrorActivity;
 import com.owlcitydev.activitypoc.activity.annotations.activity.PostActivity;
 import com.owlcitydev.activitypoc.activity.annotations.activity.PreActivity;
+import com.owlcitydev.activitypoc.activity.domain.ActivityLevel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 
-import static org.slf4j.event.Level.DEBUG;
-import static org.slf4j.event.Level.ERROR;
 
 @Slf4j
 @Service
@@ -36,13 +35,13 @@ public class TesterService {
         log.debug("TesterService.testPreActivityWithEnvironmentProperty() invoked");
     }
 
-    @PreActivity(value = "'Test system prop works with ' + @systemProperties['java.home']", level = DEBUG)
+    @PreActivity(value = "'Test system prop works with ' + @systemProperties['java.home']", level = ActivityLevel.DEBUG)
     public void testPreActivityWithSystemProperty() {
         log.debug("TesterService.testPreActivityWithSystemProperty() invoked");
     }
 
 
-    @PreActivity(value = "'Test principal username with ' + #authentication?.principal?.username", level = ERROR)
+    @PreActivity(value = "'Test principal username with ' + #authentication?.principal?.username", level = ActivityLevel.ERROR)
     public void testPreActivityWithAuthenticationPrincipalProperty() {
         log.debug("TesterService.testPreActivityWithAuthenticationPrincipalProperty() invoked");
     }

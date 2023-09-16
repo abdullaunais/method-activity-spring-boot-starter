@@ -3,6 +3,7 @@ package com.owlcitydev.activitypoc.activity.aspect;
 import com.owlcitydev.activitypoc.activity.annotations.activity.ErrorActivity;
 import com.owlcitydev.activitypoc.activity.annotations.activity.PostActivity;
 import com.owlcitydev.activitypoc.activity.annotations.activity.PreActivity;
+import com.owlcitydev.activitypoc.activity.domain.ActivityLevel;
 import com.owlcitydev.activitypoc.activity.domain.ParsedActivity;
 import com.owlcitydev.activitypoc.activity.parser.IActivityParser;
 import com.owlcitydev.activitypoc.activity.provider.ActivityProviderAdaptor;
@@ -11,7 +12,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.event.Level;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -45,7 +45,7 @@ public class ActivityAspects {
         log.trace("invoked ActivityAspects.preActivity");
         try {
             String activityTemplate = preActivity.value();
-            Level activityLevel = preActivity.level();
+            ActivityLevel activityLevel = preActivity.level();
             log.debug("activityTemplate: {}", activityTemplate);
             ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, proceedingJoinPoint);
             activityProviderAdaptor.send(activity, preActivity, activityLevel);
@@ -61,7 +61,7 @@ public class ActivityAspects {
         Object returnObject = proceedingJoinPoint.proceed();
         try {
             String activityTemplate = postActivity.value();
-            Level level = postActivity.level();
+            ActivityLevel level = postActivity.level();
             log.debug("activityTemplate: {}", activityTemplate);
             ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, proceedingJoinPoint, returnObject);
             activityProviderAdaptor.send(activity, postActivity, level);
@@ -81,7 +81,7 @@ public class ActivityAspects {
             log.error("Possibly an expected error, since error logging activity is fired");
             try {
                 String activityTemplate = errorActivity.value();
-                Level level = errorActivity.level();
+                ActivityLevel level = errorActivity.level();
                 log.debug("activityTemplate: {}", activityTemplate);
                 ParsedActivity<?> activity = activityParser.parseActivity(activityTemplate, proceedingJoinPoint);
                 activityProviderAdaptor.send(activity, errorActivity, level);

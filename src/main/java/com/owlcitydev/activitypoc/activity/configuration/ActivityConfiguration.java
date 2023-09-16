@@ -1,5 +1,6 @@
 package com.owlcitydev.activitypoc.activity.configuration;
 
+import com.owlcitydev.activitypoc.activity.domain.ActivityLevel;
 import com.owlcitydev.activitypoc.activity.provider.IActivityProvider;
 import lombok.Builder;
 import lombok.Data;
@@ -13,4 +14,5 @@ public class ActivityConfiguration {
     private ExpressionParser expressionParser;
     private Class<?> defaultActivityParamsClass;
     private List<IActivityProvider> registeredActivityProviders;
+    private ActivityLevel activityLevel;
 }
