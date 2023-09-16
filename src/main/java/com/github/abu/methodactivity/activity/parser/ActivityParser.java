@@ -1,5 +1,6 @@
 package com.github.abu.methodactivity.activity.parser;
 
+import com.github.abu.methodactivity.activity.annotations.configuration.EnableMethodActivity;
 import com.github.abu.methodactivity.activity.annotations.param.ExpressionAlias;
 import com.github.abu.methodactivity.activity.annotations.param.ParamExpression;
 import com.github.abu.methodactivity.activity.configuration.ActivityConfiguration;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.CodeSignature;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.expression.BeanFactoryResolver;
 import org.springframework.core.env.Environment;
@@ -24,6 +26,7 @@ import java.util.stream.IntStream;
 
 @Slf4j
 @Component
+@ConditionalOnBean(annotation = EnableMethodActivity.class)
 public class ActivityParser implements IActivityParser {
     private final ActivityConfiguration activityConfiguration;
     private final ApplicationContext applicationContext;

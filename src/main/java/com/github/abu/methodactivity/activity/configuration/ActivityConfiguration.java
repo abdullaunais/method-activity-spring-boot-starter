@@ -13,12 +13,11 @@ import java.util.List;
 @Builder(setterPrefix = "with", builderMethodName = "configure")
 public class ActivityConfiguration {
     @Builder.Default
-    private ExpressionParser expressionParser = new SpelExpressionParser();
-    @Builder.Default
     private ActivityLevel activityLevel = ActivityLevel.INFO;
     @Builder.Default
     private DefaultVariables variableNames = DefaultVariables.configure().build();
 
+    private final ExpressionParser expressionParser = new SpelExpressionParser();
     private List<IActivityProvider> registeredActivityProviders;
 
     @Data

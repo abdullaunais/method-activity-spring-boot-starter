@@ -1,6 +1,6 @@
 package com.github.abu.methodactivity.test.providers;
 
-import com.github.abu.methodactivity.activity.annotations.provider.ActivityProvider;
+import com.github.abu.methodactivity.activity.annotations.configuration.ActivityProvider;
 import com.github.abu.methodactivity.activity.domain.ActivityLevel;
 import com.github.abu.methodactivity.activity.domain.ParsedActivity;
 import com.github.abu.methodactivity.activity.provider.IActivityProvider;

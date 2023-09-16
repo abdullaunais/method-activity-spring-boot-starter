@@ -1,28 +1,31 @@
 package com.github.abu.methodactivity.activity.aspect;
 
+import com.github.abu.methodactivity.activity.annotations.activity.ErrorActivity;
+import com.github.abu.methodactivity.activity.annotations.activity.PostActivity;
+import com.github.abu.methodactivity.activity.annotations.activity.PreActivity;
+import com.github.abu.methodactivity.activity.annotations.configuration.EnableMethodActivity;
 import com.github.abu.methodactivity.activity.domain.ActivityAnnotationData;
 import com.github.abu.methodactivity.activity.domain.ParsedActivity;
 import com.github.abu.methodactivity.activity.parser.IActivityParser;
 import com.github.abu.methodactivity.activity.provider.ActivityProviderAdaptor;
-import com.github.abu.methodactivity.activity.annotations.activity.ErrorActivity;
-import com.github.abu.methodactivity.activity.annotations.activity.PostActivity;
-import com.github.abu.methodactivity.activity.annotations.activity.PreActivity;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Aspect
 @Component
-public class ActivityAspects {
+@ConditionalOnBean(annotation = EnableMethodActivity.class)
+public class ActivityAspect {
     private final ActivityProviderAdaptor activityProviderAdaptor;
     private final IActivityParser activityParser;
 
 
-    public ActivityAspects(ActivityProviderAdaptor activityProviderAdaptor, IActivityParser activityParser) {
+    public ActivityAspect(ActivityProviderAdaptor activityProviderAdaptor, IActivityParser activityParser) {
         this.activityProviderAdaptor = activityProviderAdaptor;
         this.activityParser = activityParser;
     }

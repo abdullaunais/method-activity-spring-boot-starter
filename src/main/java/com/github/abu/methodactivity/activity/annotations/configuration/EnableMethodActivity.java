@@ -1,4 +1,4 @@
-package com.github.abu.methodactivity.activity.annotations.provider;
+package com.github.abu.methodactivity.activity.annotations.configuration;
 
 import java.lang.annotation.*;
 
@@ -6,6 +6,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface ActivityProvider {
+public @interface EnableMethodActivity {
     String value() default "";
 }

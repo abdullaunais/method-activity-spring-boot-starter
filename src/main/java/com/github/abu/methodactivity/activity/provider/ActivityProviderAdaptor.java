@@ -1,14 +1,17 @@
 package com.github.abu.methodactivity.activity.provider;
 
-import com.github.abu.methodactivity.activity.annotations.provider.ActivityProvider;
+import com.github.abu.methodactivity.activity.annotations.configuration.ActivityProvider;
+import com.github.abu.methodactivity.activity.annotations.configuration.EnableMethodActivity;
 import com.github.abu.methodactivity.activity.configuration.ActivityConfiguration;
 import com.github.abu.methodactivity.activity.domain.ActivityAnnotationData;
 import com.github.abu.methodactivity.activity.domain.ParsedActivity;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
 
 @Component
+@ConditionalOnBean(annotation = EnableMethodActivity.class)
 public class ActivityProviderAdaptor {
     private final ActivityConfiguration activityConfiguration;
 
