@@ -1,0 +1,3 @@
+# Autoconfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.github.abdullaunais.methodactivity.autoconfigure.ActivityAutoConfiguration

@@ -8,10 +8,10 @@
         <version>3.1.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.owlcitydev</groupId>
-    <artifactId>spring-boot-method-activity</artifactId>
+    <groupId>io.github.abdullaunais</groupId>
+    <artifactId>method-activity-spring-boot-starter</artifactId>
     <version>1.0.0</version>
-    <name>spring-boot-method-activity</name>
+    <name>method-activity-spring-boot-starter</name>
     <description>Spring boot lib for annotation based aop method activity</description>
     <packaging>jar</packaging>
     <developers>
@@ -28,11 +28,16 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

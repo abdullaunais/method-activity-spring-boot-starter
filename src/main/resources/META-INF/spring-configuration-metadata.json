@@ -1,0 +1,72 @@
+{
+  "groups": [
+    {
+      "name": "spring.method-activity.security-context-enabled",
+      "type": "io.github.abdullaunais.methodactivity.core.configuration.ActivityConfiguration",
+      "sourceType": "io.github.abdullaunais.methodactivity.core.configuration.ActivityConfiguration"
+    },
+    {
+      "name": "spring.method-activity.default-variables",
+      "type": "io.github.abdullaunais.methodactivity.core.configuration.ActivityConfiguration$DefaultVariables",
+      "sourceType": "io.github.abdullaunais.methodactivity.core.configuration.ActivityConfiguration",
+      "sourceMethod": "getDefaultVariables()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.method-activity.security-context-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable security context, authentication expression variable. Default is false. Enable this only if you have spring-boot-starter-security enabled.",
+      "defaultValue": true
+    },
+    {
+      "name": "spring.method-activity.default-variables.authentication-variable",
+      "type": "java.lang.String",
+      "description": "Name of the variable to store authentication object in expression. Default is 'authentication'.",
+      "defaultValue": "authentication"
+    },
+    {
+      "name": "spring.method-activity.default-variables.simple-class-name-variable",
+      "type": "java.lang.String",
+      "description": "Name of the variable to store simple class name string in expression. Default is 'simpleClassName'.",
+      "defaultValue": "simpleClassName"
+    },
+    {
+      "name": "spring.method-activity.default-variables.full-class-name-variable",
+      "type": "java.lang.String",
+      "description": "Name of the variable to store full class name string in expression. Default is 'fullClassName'.",
+      "defaultValue": "fullClassName"
+    },
+    {
+      "name": "spring.method-activity.default-variables.method-name-variable",
+      "type": "java.lang.String",
+      "description": "Name of the variable to store method name string in expression. Default is 'methodName'.",
+      "defaultValue": "methodName"
+    },
+    {
+      "name": "spring.method-activity.default-variables.package-name-variable",
+      "type": "java.lang.String",
+      "description": "Name of the variable to store package name string in expression. Default is 'packageName'.",
+      "defaultValue": "packageName"
+    },
+    {
+      "name": "spring.method-activity.default-variables.return-object-variable",
+      "type": "java.lang.String",
+      "description": "Name of the variable to store return object in expression. Default is 'returnObject'.",
+      "defaultValue": "returnObject"
+    },
+    {
+      "name": "spring.method-activity.default-variables.execution-time-variable",
+      "type": "java.lang.String",
+      "description": "Name of the variable to store execution time in expression. Default is 'executionTime'.",
+      "defaultValue": "executionTime"
+    },
+    {
+      "name": "spring.method-activity.default-variables.exception-variable",
+      "type": "java.lang.String",
+      "description": "Name of the variable to store the exception in expression. Default is 'exception'.",
+      "defaultValue": "exception"
+    }
+  ],
+  "hints": []
+}
