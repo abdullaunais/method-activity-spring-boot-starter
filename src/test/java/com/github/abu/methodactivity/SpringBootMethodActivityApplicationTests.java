@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @SpringBootTest
 @EnableAutoConfiguration
-class ActivityPocApplicationTests {
+class SpringBootMethodActivityApplicationTests {
 
     @Autowired
     private TestService testService;
