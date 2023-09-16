@@ -1,7 +1,7 @@
 package io.github.abdullaunais.methodactivity.autoconfigure;
 
 import io.github.abdullaunais.methodactivity.core.configuration.ActivityConfiguration;
-import io.github.abdullaunais.methodactivity.core.event.IActivityEvent;
+import io.github.abdullaunais.methodactivity.core.event.ActivityEventListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +20,8 @@ public class ActivityAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(IActivityEvent.class)
-    public IActivityEvent activityEvent() {
+    @ConditionalOnMissingBean(ActivityEventListener.class)
+    public ActivityEventListener activityEvent() {
         return new DefaultSlf4jLoggingActivityListener();
     }
 }

@@ -7,7 +7,6 @@ import io.github.abdullaunais.methodactivity.core.domain.ActivityType;
 import io.github.abdullaunais.methodactivity.core.domain.ParsedActivity;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -24,10 +23,20 @@ public class ActivityEventAdaptor {
     }
 
     public void sendQualifiedEvent(ParsedActivity<?> parsedActivity, ActivityType activityType, ActivityAnnotationData annotationData) {
-        Map<String, IActivityEvent> beansOfType = listableBeanFactory.getBeansOfType(IActivityEvent.class);
+        Map<String, ActivityEventListener> beansOfType = listableBeanFactory.getBeansOfType(ActivityEventListener.class);
         beansOfType.values().stream()
                 .filter(activityProvider -> annotationData.getLevel().toInt() >= activityConfiguration.getActivityLevel().toInt())
-                .forEach(activityProvider -> activityProvider.onEvent(parsedActivity, activityType, annotationData));
+                .forEach(activityProvider -> {
+                    switch (activityType) {
+                        case PreActivity ->
+                                activityProvider.onPreActivity(parsedActivity, activityType, annotationData);
+                        case PostActivity ->
+                                activityProvider.onPostActivity(parsedActivity, activityType, annotationData);
+                        case ErrorActivity ->
+                                activityProvider.onErrorActivity(parsedActivity, activityType, annotationData);
+                        default -> throw new IllegalStateException("Unexpected activity type: " + activityType);
+                    }
+                });
     }
 
 }
