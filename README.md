@@ -55,17 +55,17 @@ class MySpringApplication {
 
 #### Template with Plain SpEL Expression Approach
 ```java
-@PreActivity("Creating user with name: #user.name")
-@PostActivity("Created user with name: #user.name with status: #result.status. Took #executionTime ms to complete")
-@ErrorActivity("Failed to create user with name: #user.name with error: #exception.message")
-public String createUser(User user){
+@PreActivity("Creating user with name #user.name")
+@PostActivity("Created user with name #user.name. Took #executionTime ms to complete")
+@ErrorActivity("Failed to create user with name #user.name with error: #exception.message")
+public String createUser(User user) {
     ...
     return result;
 }
 
-// [PreActivity] Creating user with name: John Doe
-// [PostActivity] Created user with name: John Doe with status: SUCCESS. Took 100 ms to complete
-// [ErrorActivity] Failed to create user with name: John Doe with error: User already exists
+// [PreActivity] Creating user with name John Doe
+// [PostActivity] Created user with name John Doe. Took 100 ms to complete
+// [ErrorActivity] Failed to create user with name John Doe with error: User already exists
 ```
 &nbsp;
 &nbsp;
@@ -77,7 +77,7 @@ public String createUser(User user){
 @PreActivity("${activity.create-user.pre}")
 @PostActivity("${activity.create-user.post}")
 @ErrorActivity("${activity.create-user.error}")
-public String createUser(User user){
+public String createUser(User user) {
     ...
     return result;
 }
@@ -93,10 +93,10 @@ activity.create-user.error=Failed to create user with name: #user.name with erro
 #### Using the arguments passed to the method in the expression
 ```java
 @PreActivity("Searching for query: #query")
-public List<Data> searchData(String query){...}
+public List<Data> searchData(String query) { ... }
 
 @PreActivity("Updating user with id: #id and name: #user.name")
-public void updateUser(String id, User user){...}
+public void updateUser(String id, User user) { ... }
 
 
 // [PreActivity] Searching for query: spring boot
@@ -108,7 +108,7 @@ public void updateUser(String id, User user){...}
 ```java
 @PreActivity("Getting user #authentication.principal.username")
 @PostActivity("Successfully fetched user #authentication.principal.username with name: #returnObject.name")
-public User getUser(){
+public User getUser() {
     ...
     return user;
 }
@@ -123,13 +123,13 @@ public User getUser(){
 
 ```java
 @PreActivity("I am running java @systemProperties['java.version'] at @systemProperties['java.home']")
-public String getSystemInfo(){...}
+public String getSystemInfo() { ... }
 
 @PreActivity("I am @environment.getProperty('spring.application.name')")
-public String getAppInfo(){...}
+public String getAppInfo() { ... }
 
 @PreActivity("Database driver is @dataSource.connection.metaData.driverName")
-public String getDbInfo(){...}
+public String getDbInfo() { ... }
 
 // [PreActivity] I am running java 17.0.6 at C:\Program Files\Java\jdk-17.0.6
 // [PreActivity] I am demo-service
@@ -145,12 +145,12 @@ You can customize the behavior by overriding the default values of the annotatio
 ```java
 
 @PreActivity(value = "Invoked method: #methodName", level = ActivityLevel.TRACE)
-public String createUser(User user){...}
+public String createUser(User user) { ... }
 
 
 @PostActivity(value = "Successful fund transfer", entity = "transaction", entityId = "#transaction.id", paramClass = TransactionParams.class)
 @ErrorActivity(value = "Failed fund transfer with reason: #exception.message", entity = "transaction", entityId = "#transaction.id", paramClass = TransactionParams.class)
-public TransactionResponse doFundTransfer(Transaction transaction) {...}
+public TransactionResponse doFundTransfer(Transaction transaction) { ... }
 
 @Data
 public class TransactionParams extends BaseActivityParams {
@@ -161,11 +161,10 @@ public class TransactionParams extends BaseActivityParams {
    @ParamExpression("#returnObj?.status")
    private String status;
 }
-
-
-
 ```
 
+&nbsp;
+&nbsp;
 ### Configure the Listener (Optional)
 You can configure the listener to listen to activity events. The default listener logs the activity events to the console. You can configure your own listener by implementing `ActivityEventListener` interface and registering it as a bean.
 
