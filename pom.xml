@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.owlcitydev</groupId>
-    <artifactId>spring-boot-starter-activity</artifactId>
+    <artifactId>spring-boot-starter-method-activity</artifactId>
     <version>1.0.0</version>
-    <name>spring-boot-starter-activity</name>
-    <description>Spring Boot Starter For Activity Lib</description>
+    <name>spring-boot-starter-method-activity</name>
+    <description>Spring Boot Starter For Method Activity Lib</description>
     <packaging>jar</packaging>
     <developers>
         <developer>
