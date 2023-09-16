@@ -11,7 +11,7 @@ import java.lang.annotation.Annotation;
 
 @Slf4j
 @ActivityProvider
-public class TestSlf4jActivityProvider implements IActivityProvider {
+public class TesterSlf4jActivityProvider implements IActivityProvider {
 
     @Override
     public void send(ParsedActivity<?> parsedActivity, Annotation annotation, ActivityLevel level) {
