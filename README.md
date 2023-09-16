@@ -98,8 +98,13 @@ public List<Data> searchData(String query) { ... }
 @PreActivity("Updating user with id: #id and name: #user.name")
 public void updateUser(String id, User user) { ... }
 
+@PreActivity("Updating user with id: #id and name: #user.name")
+public void updateUser(String id, @ExpressionAlias("user") User updatedUser) { ... }
+// user is the alias for updatedUser
+
 
 // [PreActivity] Searching for query: spring boot
+// [PreActivity] Updating user with id: 123 and name: John Doe
 // [PreActivity] Updating user with id: 123 and name: John Doe
 ```
 &nbsp;
