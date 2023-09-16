@@ -1,4 +1,4 @@
-package com.github.abu.methodactivity.tester;
+package com.github.abu.methodactivity.tester.paramclasses;
 
 import com.github.abu.methodactivity.activity.annotations.param.ParamExpression;
 import com.github.abu.methodactivity.activity.domain.BaseActivityParams;
