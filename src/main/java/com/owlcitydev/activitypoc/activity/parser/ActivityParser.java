@@ -30,7 +30,7 @@ public class ActivityParser implements IActivityParser {
         this.expressionParser = activityConfiguration.getExpressionParser();
     }
 
-    //    @Override
+    @Override
     public <T> ParsedActivity<T> parseActivity(String activityTemplate, ProceedingJoinPoint proceedingJoinPoint, Object returnObject) {
         log.trace("pointcut argument size: {}", proceedingJoinPoint.getArgs().length);
         StandardEvaluationContext context = new StandardEvaluationContext();
