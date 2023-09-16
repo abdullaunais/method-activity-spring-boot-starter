@@ -144,8 +144,11 @@ You can customize the behavior by overriding the default values of the annotatio
 #### Configure activity level, paramClass and entity
 ```java
 
-@PreActivity(value = "Invoked method: #methodName", level = ActivityLevel.TRACE)
-public String createUser(User user) { ... }
+@PreActivity(value = "Invoked #simpleClassName + '.' + #methodName + '(' + #arg1 + ')'", level = ActivityLevel.TRACE)
+public String getData(Integer id) { ... }
+
+// [PreActivity] Invoked DataService.getData(123)
+
 
 
 @PostActivity(value = "Successful fund transfer", entity = "transaction", entityId = "#transaction.id", paramClass = TransactionParams.class)
@@ -161,6 +164,12 @@ public class TransactionParams extends BaseActivityParams {
    @ParamExpression("#returnObj?.status")
    private String status;
 }
+
+// [PostActivity] Successful fund transfer
+// Params: {amount=100, currency=USD, status=SUCCESS}
+
+// [ErrorActivity] Failed fund transfer with reason: Insufficient funds
+// Params: {amount=100, currency=USD, status=FAILED}
 ```
 
 &nbsp;
