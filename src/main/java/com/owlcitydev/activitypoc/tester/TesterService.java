@@ -26,8 +26,13 @@ public class TesterService {
     }
 
     @PreActivity("#arg1 + ' ' + #arg2")
-    public void testPreActivityWithArgs(String arg1, String arg2) {
-        log.debug("TesterService.testPreActivity() invoked with args: {}, {}", arg1, arg2);
+    public void testPreActivityWithArgStrings(String arg1, String arg2) {
+        log.debug("TesterService.testPreActivityWithArgStrings() invoked with args: {}, {}", arg1, arg2);
+    }
+
+    @PreActivity("#arg1 + ' ' + #user.username")
+    public void testPreActivityWithArgObjects(String arg1, User user) {
+        log.debug("TesterService.testPreActivityWithArgObjects() invoked");
     }
 
     @PreActivity("'Test environment prop works with tester.prop=' + @environment.getProperty('tester.prop')")

@@ -37,7 +37,8 @@ public class ApplicationBootstrap implements ApplicationListener<ApplicationStar
         testerService.init();
 
         testerService.testPreActivity();
-        testerService.testPreActivityWithArgs("Test testPreActivityWithArgs", "Works!");
+        testerService.testPreActivityWithArgStrings("Test testPreActivityWithArgStrings", "Works!");
+        testerService.testPreActivityWithArgObjects("Test testPreActivityWithArgObjects with", new User("hello_arg_user", "test_password", new HashSet<>()));
         testerService.testPreActivityWithEnvironmentProperty();
         testerService.testPreActivityWithSystemProperty();
         testerService.testPreActivityWithAuthenticationPrincipalProperty();
