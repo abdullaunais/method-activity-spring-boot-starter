@@ -95,7 +95,9 @@ class SpringBootMethodActivityApplicationTests {
     void testPreActivityWithSystemProperty() {
         testService.invokePreActivityWithSystemProperty();
         assertEquals(messageStack.size(), 1);
-        assertEquals(messageStack.pop(), "Test system prop works with C:\\Program Files\\Java\\jdk-20");
+        String message = messageStack.pop().toLowerCase();
+        assertTrue(message.contains("test system prop works with"));
+        assertTrue(message.contains("jdk") || message.contains("jre"));
     }
 
     @Test
