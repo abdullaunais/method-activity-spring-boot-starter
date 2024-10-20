@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>io.github.abdullaunais</groupId>
@@ -76,9 +76,18 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.6.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                        </configuration>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.6.3</version>
+                        <version>3.10.1</version>
                         <executions>
                             <execution>
                                 <id>attach-javadoc</id>
@@ -91,7 +100,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.3.0</version>
+                        <version>3.3.1</version>
                         <executions>
                             <execution>
                                 <id>attach-source</id>
@@ -102,46 +111,18 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.kordamp.maven</groupId>
-                        <artifactId>pomchecker-maven-plugin</artifactId>
-                        <version>1.9.0</version>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.7</version>
                         <executions>
                             <execution>
-                                <id>check-release</id>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
                                 <goals>
-                                    <goal>check-maven-central</goal>
+                                    <goal>sign</goal>
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.jreleaser</groupId>
-                        <artifactId>jreleaser-maven-plugin</artifactId>
-                        <version>1.9.0</version>
-                        <configuration>
-                            <jreleaser>
-                                <project>
-                                    <copyright>2024 OwlCityDev</copyright>
-                                </project>
-                                <signing>
-                                    <active>ALWAYS</active>
-                                    <armored>true</armored>
-                                </signing>
-                                <deploy>
-                                    <maven>
-                                        <nexus2>
-                                            <maven-central>
-                                                <active>ALWAYS</active>
-                                                <url>https://s01.oss.sonatype.org/service/local</url>;
-                                                <closeRepository>true</closeRepository>
-                                                <releaseRepository>true</releaseRepository>
-                                                <stagingRepositories>target/staging-deploy</stagingRepositories>
-                                            </maven-central>
-                                        </nexus2>
-                                    </maven>
-                                </deploy>
-                            </jreleaser>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
